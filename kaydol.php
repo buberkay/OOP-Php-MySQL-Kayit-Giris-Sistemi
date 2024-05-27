@@ -1,9 +1,10 @@
 <?php
+
 require_once 'autoload.php';
 
 if (isset($_POST['kaydol'])) {
   $kullanici = new Kullanici();
-  $mesaj = $kullanici->veriEkle($_POST['tc'], $_POST['ad'], $_POST['soyad'], $_POST['telefon'], $_POST['eposta'], $_POST['adres']);
+  $mesaj = $kullanici->veriEkle($_POST['tc'], $_POST['ad'], $_POST['soyad'], $_POST['telefon'], $_POST['eposta'], $_POST['sifre'], $_POST['adres']);
   echo '<script>alert("'.$mesaj.'");</script>';
 }
 ?>
@@ -16,7 +17,7 @@ if (isset($_POST['kaydol'])) {
     <title>Kayıt Formu</title>
     <link rel="stylesheet" href="mystyle.css">
 </head>
-<body>
+<body class="body-kaydol">
     
 <form action="kaydol.php" method="POST">
   <div class="container">
@@ -36,6 +37,9 @@ if (isset($_POST['kaydol'])) {
 
     <label><b>E-posta</b></label>
     <input type="email" placeholder="xxx@xxx.com" name="eposta" id="eposta" required>
+    
+    <label><b>Şifre</b></label>
+    <input type="password" name="sifre" id="sifre" required>
 
     <label><b>Adres</b></label>
     <input type="text" name="adres" id="adres" required>
