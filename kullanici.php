@@ -29,6 +29,9 @@ class kullanici {
   }
   
   public function kullaniciGiris($eposta, $sifre) {
+    if (empty($eposta)) return "E-posta boş olamaz.";
+    if (empty($sifre)) return "Şifre boş olamaz.";
+
     $sql = "SELECT * FROM kullanicilar WHERE eposta = '$eposta' AND sifre = '$sifre'";
     $result = $this->db->sorgu($sql);
 
@@ -38,6 +41,9 @@ class kullanici {
     } else {
         return "E-posta veya şifre hatalı.";
     }
+}
+   public function veriAl() {
+    return $this->db;
 }
 }
 
