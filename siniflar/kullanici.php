@@ -45,6 +45,16 @@ class kullanici {
    public function veriAl() {
     return $this->db;
 }
+public function veriGuncelle($tc, $ad, $soyad, $tel, $eposta, $adres) {
+    $sql = "UPDATE kullanicilar SET 
+            tc_no = '$tc', 
+            ad = '$ad', 
+            soyad = '$soyad', 
+            tel_no = '$tel', 
+            adres = '$adres' 
+            WHERE eposta = '$eposta'";
+    return $this->db->sorgu($sql);
+}
 }
 
 ?>

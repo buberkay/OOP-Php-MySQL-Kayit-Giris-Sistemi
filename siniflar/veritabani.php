@@ -23,4 +23,5 @@ class veritabani {
         $this->baglanti->close();
     }
   }
+
 ?>
