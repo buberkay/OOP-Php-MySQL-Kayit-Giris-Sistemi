@@ -19,8 +19,10 @@ class kullanici {
     if (strlen($tc) != 11) return "TC Kimlik Numaranızı kontrol ediniz.";
     if (strlen($tel) != 10) return "Telefon Numarasnızı kontrol ediniz.";
 
+    $hashedsifre = password_hash($sifre, PASSWORD_BCRYPT);
+
       $sql = "INSERT INTO kullanicilar (tc_no, ad, soyad, tel_no, eposta, sifre, adres) 
-              VALUES ('$tc', '$ad', '$soyad', '$tel', '$eposta', '$sifre', '$adres')";
+              VALUES ('$tc', '$ad', '$soyad', '$tel', '$eposta', '$hashedsifre', '$adres')";
       if ($this->db->sorgu($sql)) {
           return "Kayıt başarılı!";
       } else {
@@ -32,20 +34,29 @@ class kullanici {
     if (empty($eposta)) return "E-posta boş olamaz.";
     if (empty($sifre)) return "Şifre boş olamaz.";
 
-    $sql = "SELECT * FROM kullanicilar WHERE eposta = '$eposta' AND sifre = '$sifre'";
+    $sql = "SELECT * FROM kullanicilar WHERE eposta = '$eposta'";
     $result = $this->db->sorgu($sql);
 
     if ($result->num_rows == 1) {
-        $_SESSION['eposta'] = $eposta;
-        return "Giriş başarılı!";
+        $row = $result->fetch_assoc();
+        $hashedsifre = $row['sifre'];
+
+        if (password_verify($sifre, $hashedsifre)) {
+            $_SESSION['eposta'] = $eposta;
+            return "Giriş başarılı!";
+        } else {
+            return "Şifre hatalı.";
+        }
     } else {
-        return "E-posta veya şifre hatalı.";
+        return "E-posta hatalı.";
     }
-}
+    }
+
    public function veriAl() {
     return $this->db;
-}
-public function veriGuncelle($tc, $ad, $soyad, $tel, $eposta, $adres) {
+    }
+    public function veriGuncelle($tc, $ad, $soyad, $tel, $eposta, $adres) {
+
     $sql = "UPDATE kullanicilar SET 
             tc_no = '$tc', 
             ad = '$ad', 
