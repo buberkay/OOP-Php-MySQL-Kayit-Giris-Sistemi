@@ -50,13 +50,14 @@ class kullanici {
     } else {
         return "E-posta hatalı.";
     }
+
     }
 
    public function veriAl() {
     return $this->db;
     }
-    public function veriGuncelle($tc, $ad, $soyad, $tel, $eposta, $adres) {
 
+    public function veriGuncelle($tc, $ad, $soyad, $tel, $eposta, $adres) {
     $sql = "UPDATE kullanicilar SET 
             tc_no = '$tc', 
             ad = '$ad', 
@@ -65,7 +66,9 @@ class kullanici {
             adres = '$adres' 
             WHERE eposta = '$eposta'";
     return $this->db->sorgu($sql);
+     }
+    public function kullanicicikis() {
+        session_destroy();
+     }
 }
-}
-
 ?>

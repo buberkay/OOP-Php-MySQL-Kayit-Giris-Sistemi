@@ -29,6 +29,13 @@ if (isset($_POST['guncelle'])) {
         echo '<script>alert("Hata! Bilgiler güncellenemedi."); window.location.href = "profil.php";</script>';
     }
 }
+
+if (isset($_POST['cikisyap'])) {
+    $kullanici->kullanicicikis();
+    echo '<script>alert("Çıkış başarılı."); window.location.href = "girisyap.php";</script>';
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +67,9 @@ if (isset($_POST['guncelle'])) {
         <input type="text" name="adres" value="<?php echo $userData['adres']; ?>" required>
         
         <button type="submit" name="guncelle" class="updatebtn">Bilgileri Güncelle</button>
+    </form>
+    <form action="" method="POST">
+        <button type="submit" class="cikisbtn" name="cikisyap">Çıkış Yap</button>
     </form>
 </div>
 
