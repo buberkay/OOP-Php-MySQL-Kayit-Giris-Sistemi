@@ -3,7 +3,7 @@
 session_start();
 require_once 'autoload.php';
 
-if (isset($_POST['girisyap'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['girisyap'])) {
     $kullanici = new Kullanici();
     $mesaj = $kullanici->kullaniciGiris($_POST['eposta'], $_POST['sifre']);
     echo '<script>alert("'.$mesaj.'");</script>';
