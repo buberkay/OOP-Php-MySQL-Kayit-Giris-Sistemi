@@ -1,16 +1,19 @@
 <?php
 
-session_start();
 require_once 'autoload.php';
 
-if (isset($_POST['girisyap'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['girisyap'])) {
     $kullanici = new Kullanici();
     $mesaj = $kullanici->kullaniciGiris($_POST['eposta'], $_POST['sifre']);
-    echo '<script>alert("'.$mesaj.'");</script>';
+
     if ($mesaj == "Giriş başarılı!") {
-        header("Refresh: 1, url=profil.php");
-        exit();
-    }
+      session_start();
+      $_SESSION['eposta'] = $_POST['eposta'];
+      echo '<script>alert("'.$mesaj.'"); window.location.href = "profil.php";</script>';
+      exit();
+     } else {
+      echo '<script>alert("'.$mesaj.'");</script>';
+     }
 }
 ?>
 

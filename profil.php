@@ -50,7 +50,7 @@ if (isset($_POST['cikisyap'])) {
     
 <div class="container">
     <h1>Profil</h1>
-    <form action="profil.php" method="POST">
+    <form action="profil.php" method="POST" onsubmit="return GuncellemeOnay()">
         <label><b>TC Kimlik Numarası</b></label>
         <input type="text" name="tc" value="<?php echo $userData['tc_no']; ?>" required>
         
@@ -68,10 +68,19 @@ if (isset($_POST['cikisyap'])) {
         
         <button type="submit" name="guncelle" class="updatebtn">Bilgileri Güncelle</button>
     </form>
+
     <form action="" method="POST">
-        <button type="submit" class="cikisbtn" name="cikisyap">Çıkış Yap</button>
+    <button type="submit" class="cikisbtn" name="cikisyap">Çıkış Yap</button>
+
     </form>
+</form>
 </div>
+
+<script>
+function GuncellemeOnay() {
+    return confirm("Bilgilerinizi güncellemek istediğinize emin misiniz?");
+}
+</script>
 
 </body>
 </html>
