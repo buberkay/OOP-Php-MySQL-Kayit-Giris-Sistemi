@@ -107,3 +107,12 @@ hr {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.cikisbtn {
+    background-color: #e74c3c;
+    margin-top: 20px; 
+}
+
+.cikisbtn:hover {
+    background-color: #c0392b;
+}
