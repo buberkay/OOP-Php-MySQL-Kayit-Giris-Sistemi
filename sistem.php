@@ -3,7 +3,7 @@ session_start();
 require_once 'autoload.php';
 
 if (!isset($_SESSION['yonetici_eposta'])) {
-    header("Location: sistem.php");
+    header("Location: yoneticigirisyap.php");
     exit();
 }
 
