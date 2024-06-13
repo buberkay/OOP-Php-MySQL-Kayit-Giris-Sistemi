@@ -18,7 +18,14 @@ class kullanici {
     if (empty($adres)) return "Adres boş olamaz.";
     if (strlen($tc) != 11) return "TC Kimlik Numaranızı kontrol ediniz.";
     if (strlen($tel) != 10) return "Telefon Numarasnızı kontrol ediniz.";
+    if (!filter_var($eposta, FILTER_VALIDATE_EMAIL)) return "Geçersiz e-posta adresi.";
 
+    $tc = $this->db->baglanti->real_escape_string($tc);
+    $ad = $this->db->baglanti->real_escape_string($ad);
+    $soyad = $this->db->baglanti->real_escape_string($soyad);
+    $tel = $this->db->baglanti->real_escape_string($tel);
+    $eposta = $this->db->baglanti->real_escape_string($eposta);
+    $adres = $this->db->baglanti->real_escape_string($adres);
     $hashedsifre = password_hash($sifre, PASSWORD_BCRYPT);
 
       $sql = "INSERT INTO kullanicilar (tc_no, ad, soyad, tel_no, eposta, sifre, adres) 
@@ -33,6 +40,7 @@ class kullanici {
   public function kullaniciGiris($eposta, $sifre) {
     if (empty($eposta)) return "E-posta boş olamaz.";
     if (empty($sifre)) return "Şifre boş olamaz.";
+    if (!filter_var($eposta, FILTER_VALIDATE_EMAIL)) return "Geçersiz e-posta adresi.";
 
     $sql = "SELECT * FROM kullanicilar WHERE eposta = '$eposta'";
     $result = $this->db->sorgu($sql);
@@ -66,7 +74,8 @@ class kullanici {
             adres = '$adres' 
             WHERE eposta = '$eposta'";
     return $this->db->sorgu($sql);
-     }
+    }
+
     public function kullanicicikis() {
         session_destroy();
      }
