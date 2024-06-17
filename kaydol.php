@@ -42,7 +42,7 @@ if (isset($_POST['kaydol'])) {
     <input type="password" name="sifre" id="sifre" required>
 
     <label><b>Adres</b></label>
-    <input type="text" name="adres" id="adres" required>
+    <textarea name="adres" id="adres" required></textarea>
     <hr>
 
   </div> 
