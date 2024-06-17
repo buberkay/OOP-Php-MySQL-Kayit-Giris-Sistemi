@@ -64,7 +64,7 @@ if (isset($_POST['cikisyap'])) {
         <input type="text" name="telefon" value="<?php echo $userData['tel_no']; ?>" required>
         
         <label><b>Adres</b></label>
-        <input type="text" name="adres" value="<?php echo $userData['adres']; ?>" required>
+        <textarea name="adres" required><?php echo $userData['adres']; ?></textarea>
         
         <button type="submit" name="guncelle" class="updatebtn">Bilgileri Güncelle</button>
     </form>
