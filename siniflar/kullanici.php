@@ -53,10 +53,10 @@ class kullanici {
             $_SESSION['eposta'] = $eposta;
             return "Giriş başarılı!";
         } else {
-            return "Şifre hatalı.";
+            return "Giriş bilgilerinizi kontrol ediniz.";
         }
     } else {
-        return "E-posta hatalı.";
+        return "Giriş bilgilerinizi kontrol ediniz.";
     }
 
     }
