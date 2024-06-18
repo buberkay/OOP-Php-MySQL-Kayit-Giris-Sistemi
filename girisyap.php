@@ -1,14 +1,16 @@
 <?php
 
 require_once 'autoload.php';
+$girilenEposta = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['girisyap'])) {
+    $girilenEposta = $_POST['eposta'];
     $kullanici = new Kullanici();
-    $mesaj = $kullanici->kullaniciGiris($_POST['eposta'], $_POST['sifre']);
+    $mesaj = $kullanici->kullaniciGiris( $girilenEposta, $_POST['sifre']);
 
     if ($mesaj == "Giriş başarılı!") {
       session_start();
-      $_SESSION['eposta'] = $_POST['eposta'];
+      $_SESSION['eposta'] = $girilenEposta;
       echo '<script>alert("'.$mesaj.'"); window.location.href = "profil.php";</script>';
       exit();
      } else {
@@ -32,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['girisyap'])) {
     <hr>
 
     <label><b>E-posta</b></label>
-    <input type="email" placeholder="xxx@xxx.com" name="eposta" id="eposta" required>
+    <input type="email" placeholder="xxx@xxx.com" name="eposta" id="eposta" value="<?php echo htmlspecialchars($girilenEposta); ?>" required>
 
     <label><b>Şifre</b></label>
     <input type="password" name="sifre" id="sifre" required>
