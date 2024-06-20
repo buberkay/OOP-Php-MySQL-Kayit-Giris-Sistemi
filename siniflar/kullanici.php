@@ -8,17 +8,25 @@ class kullanici {
       $this->db = new Veritabani();
   }
 
-  public function veriEkle($tc, $ad, $soyad, $tel, $eposta, $sifre, $adres) {
+  private function veriKontrol($tc, $ad, $soyad, $tel, $eposta, $adres) {
     if (empty($tc)) return "TC Kimlik Numarası boş olamaz.";
     if (empty($ad)) return "Ad boş olamaz.";
     if (empty($soyad)) return "Soyad boş olamaz.";
     if (empty($tel)) return "Telefon Numarası boş olamaz.";
     if (empty($eposta)) return "E-posta boş olamaz.";
-    if (empty($sifre)) return "Şifre boş olamaz.";
     if (empty($adres)) return "Adres boş olamaz.";
     if (strlen($tc) != 11) return "TC Kimlik Numaranızı kontrol ediniz.";
-    if (strlen($tel) != 10) return "Telefon Numarasnızı kontrol ediniz.";
+    if (strlen($tel) != 10) return "Telefon Numaranızı kontrol ediniz.";
     if (!filter_var($eposta, FILTER_VALIDATE_EMAIL)) return "Geçersiz e-posta adresi.";
+
+    return true;
+    }
+
+  public function veriEkle($tc, $ad, $soyad, $tel, $eposta, $sifre, $adres) {
+
+    $kontrol = $this->veriKontrol($tc, $ad, $soyad, $tel, $eposta, $adres);
+    if ($kontrol !== true) return $kontrol;
+    if (empty($sifre)) return "Şifre boş olamaz.";
 
     $tc = $this->db->baglanti->real_escape_string($tc);
     $ad = $this->db->baglanti->real_escape_string($ad);
@@ -37,35 +45,11 @@ class kullanici {
       }
   }
   
-  public function kullaniciGiris($eposta, $sifre) {
-    if (empty($eposta)) return "E-posta boş olamaz.";
-    if (empty($sifre)) return "Şifre boş olamaz.";
-    if (!filter_var($eposta, FILTER_VALIDATE_EMAIL)) return "Geçersiz e-posta adresi.";
+  public function veriGuncelle($tc, $ad, $soyad, $tel, $eposta, $adres) {
 
-    $sql = "SELECT * FROM kullanicilar WHERE eposta = '$eposta'";
-    $result = $this->db->sorgu($sql);
-
-    if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        $hashedsifre = $row['sifre'];
-
-        if (password_verify($sifre, $hashedsifre)) {
-            $_SESSION['eposta'] = $eposta;
-            return "Giriş başarılı!";
-        } else {
-            return "Giriş bilgilerinizi kontrol ediniz.";
-        }
-    } else {
-        return "Giriş bilgilerinizi kontrol ediniz.";
-    }
-
-    }
-
-   public function veriAl() {
-    return $this->db;
-    }
-
-    public function veriGuncelle($tc, $ad, $soyad, $tel, $eposta, $adres) {
+    $kontrol = $this->veriKontrol($tc, $ad, $soyad, $tel, $eposta, $adres);
+    if ($kontrol !== true) return $kontrol;
+        
     $sql = "UPDATE kullanicilar SET 
             tc_no = '$tc', 
             ad = '$ad', 
@@ -76,8 +60,49 @@ class kullanici {
     return $this->db->sorgu($sql);
     }
 
+    public function aktiflikGuncelle($eposta, $aktiflik)
+    {
+      $aktiflik = $aktiflik ? 1 : 0;
+  
+      $sql = "UPDATE kullanicilar SET aktiflik = '$aktiflik' WHERE eposta = '$eposta'";
+      return $this->db->sorgu($sql);
+    }
+  
+    public function kullaniciGiris($eposta, $sifre) {
+      if (empty($eposta)) return "E-posta boş olamaz.";
+      if (empty($sifre)) return "Şifre boş olamaz.";
+      if (!filter_var($eposta, FILTER_VALIDATE_EMAIL)) return "Geçersiz e-posta adresi.";
+  
+      $sql = "SELECT * FROM kullanicilar WHERE eposta = '$eposta'";
+      $result = $this->db->sorgu($sql);
+  
+      if ($result->num_rows == 1) {
+          $row = $result->fetch_assoc();
+          $hashedsifre = $row['sifre'];
+          $aktiflik = $row['aktiflik'];
+  
+          if ($aktiflik == 1 && password_verify($sifre, $hashedsifre)) {
+              $_SESSION['eposta'] = $eposta;
+              return "Giriş başarılı!";
+          } elseif ($aktiflik == 0) {
+              return "Hesabınız askıya alınmıştır.";
+          } else {
+              return "Giriş bilgilerinizi kontrol ediniz.";
+          }
+      } else {
+          return "Giriş bilgilerinizi kontrol ediniz.";
+      }
+  }
+    
+
+   public function veriAl() {
+    return $this->db;
+    }
+
+
     public function kullanicicikis() {
         session_destroy();
      }
+
 }
 ?>
