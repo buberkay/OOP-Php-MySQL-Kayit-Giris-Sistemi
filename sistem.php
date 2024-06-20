@@ -85,7 +85,7 @@ if (isset($_POST['aktiflik_guncelle'])) {
             echo "<input type='email' name='eposta' value='".$row["eposta"]."' readonly>";
 
             echo "<label><b>Adres</b></label>";
-            echo "<input type='text' name='adres' value='".$row["adres"]."' required>";
+           echo "<textarea name='adres' required>".$row["adres"]."</textarea>";
             
             echo "<button type='submit' name='guncelle' class='updatebtn'>Bilgileri Güncelle</button>";
             echo "</form>";
