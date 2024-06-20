@@ -28,12 +28,6 @@ class kullanici {
     if ($kontrol !== true) return $kontrol;
     if (empty($sifre)) return "Şifre boş olamaz.";
 
-    $tc = $this->db->baglanti->real_escape_string($tc);
-    $ad = $this->db->baglanti->real_escape_string($ad);
-    $soyad = $this->db->baglanti->real_escape_string($soyad);
-    $tel = $this->db->baglanti->real_escape_string($tel);
-    $eposta = $this->db->baglanti->real_escape_string($eposta);
-    $adres = $this->db->baglanti->real_escape_string($adres);
     $hashedsifre = password_hash($sifre, PASSWORD_BCRYPT);
 
       $sql = "INSERT INTO kullanicilar (tc_no, ad, soyad, tel_no, eposta, sifre, adres) 
