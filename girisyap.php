@@ -31,8 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['girisyap'])) {
   
 <form action="girisyap.php" method="POST">
   <div class="container">
+  <div class="header">
+  <h2>Kullanıcı Girişi</h2>
+  </div>
     <hr>
-
     <label><b>E-posta</b></label>
     <input type="email" placeholder="xxx@xxx.com" name="eposta" id="eposta" value="<?php echo htmlspecialchars($girilenEposta); ?>" required>
 
