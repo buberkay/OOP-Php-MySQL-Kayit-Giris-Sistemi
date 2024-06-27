@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 <?php
-require_once 'autoload.php';
+require_once '../autoload.php';
 
 class yonetici{
   private $db;
@@ -10,9 +9,9 @@ class yonetici{
   }
 
   public function yoneticiGiris($eposta, $sifre) {
-    if (empty($eposta)) return "E-posta boş olamaz.";
-    if (empty($sifre)) return "Şifre boş olamaz.";
-    if (!filter_var($eposta, FILTER_VALIDATE_EMAIL)) return "Geçersiz e-posta adresi.";
+    if (empty($eposta) || empty($sifre) || !filter_var($eposta, FILTER_VALIDATE_EMAIL)) {
+        return 0;
+    }
 
     $sql = "SELECT * FROM yoneticiler WHERE eposta = '$eposta'";
     $result = $this->db->sorgu($sql);
@@ -23,14 +22,14 @@ class yonetici{
 
         if (password_verify($sifre, $hashedsifre)) {
             $_SESSION['eposta'] = $eposta;
-            return "Giriş başarılı!";
+            return 1;
         } else {
-            return "Giriş bilgilerinizi kontrol ediniz.";
+            return 0;
         }
     } else {
-        return "Giriş bilgilerinizi kontrol ediniz.";
-    }
+        return 0;
     }
 }
 
+}
 ?>

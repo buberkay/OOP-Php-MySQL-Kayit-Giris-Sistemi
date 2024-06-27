@@ -1,11 +1,16 @@
 <?php
 
-require_once 'autoload.php';
+require_once '../autoload.php';
 
 if (isset($_POST['kaydol'])) {
   $kullanici = new Kullanici();
-  $mesaj = $kullanici->veriEkle($_POST['tc'], $_POST['ad'], $_POST['soyad'], $_POST['telefon'], $_POST['eposta'], $_POST['sifre'], $_POST['adres']);
-  echo '<script>alert("'.$mesaj.'");</script>';
+  $sonuc = $kullanici->veriEkle($_POST['tc'], $_POST['ad'], $_POST['soyad'], $_POST['telefon'], $_POST['eposta'], $_POST['sifre'], $_POST['adres']);
+
+  if ($sonuc == 1) {
+      echo '<script>alert("Kayıt başarılı!");</script>';
+  } else {
+      echo '<script>alert("Kayıt başarısız!");</script>';
+  }
 }
 ?>
 
@@ -15,7 +20,7 @@ if (isset($_POST['kaydol'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kayıt Formu</title>
-    <link rel="stylesheet" href="mystyle.css">
+    <link rel="stylesheet" href="../mystyle.css">
 </head>
 <body class="body-kaydol">
     

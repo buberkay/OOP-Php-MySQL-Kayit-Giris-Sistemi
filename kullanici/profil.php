@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'autoload.php';
+require_once '../autoload.php';
 
 if (!isset($_SESSION['eposta'])) {
     header("Location: girisyap.php");
@@ -23,11 +23,15 @@ if (isset($_POST['guncelle'])) {
 
     $mesaj = $kullanici->veriGuncelle($tc, $ad, $soyad, $telefon, $eposta, $adres);
     
-    if ($mesaj) {
+    if ($mesaj ==1) {
         echo '<script>alert("Bilgiler güncellendi."); window.location.href = "profil.php";</script>';
-    } else {
+    } 
+    if($mesaj == 0) {
         echo '<script>alert("Hata! Bilgiler güncellenemedi."); window.location.href = "profil.php";</script>';
-    }
+    }else{
+        echo '<script>alert("'.$mesaj.'");</script>';
+ }
+
 }
 
 if (isset($_POST['cikisyap'])) {
@@ -44,7 +48,7 @@ if (isset($_POST['cikisyap'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
-    <link rel="stylesheet" href="mystyle.css">
+    <link rel="stylesheet" href="../mystyle.css">
 </head>
 <body class="body-profil">
     

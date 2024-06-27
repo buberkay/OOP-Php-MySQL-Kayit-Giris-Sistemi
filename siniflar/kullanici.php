@@ -1,5 +1,5 @@
 <?php
-require_once 'autoload.php';
+require_once '../autoload.php';
 
 class kullanici {
   private $db;
@@ -15,8 +15,18 @@ class kullanici {
     if (empty($tel)) return "Telefon Numarası boş olamaz.";
     if (empty($eposta)) return "E-posta boş olamaz.";
     if (empty($adres)) return "Adres boş olamaz.";
-    if (strlen($tc) != 11) return "TC Kimlik Numaranızı kontrol ediniz.";
-    if (strlen($tel) != 10) return "Telefon Numaranızı kontrol ediniz.";
+
+    if ((strlen($tc) != 11) || (!is_numeric($tc))) return "TC Kimlik numaranızı geçerli değildir.";
+    if ((strlen($tel) != 10) || (!is_numeric($tel))) return "Telefon numaranızı geçerli değildir.";
+
+    $gecersizKarakterler = '/[!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]+/';
+    if (preg_match($gecersizKarakterler, $ad) || preg_match($gecersizKarakterler, $soyad)) {
+        return "İsim bilgilerinizde geçersiz karakterler bulunmaktadır.";
+    }
+    if((strlen($ad)>20) || strlen($soyad)>20) return "İsim bilgileriniz çok uzundur.Kontrol ediniz.";
+
+    if ((strlen($adres) > 80)) return "Adresiniz çok uzundur.Kontrol ediniz.";
+
     if (!filter_var($eposta, FILTER_VALIDATE_EMAIL)) return "Geçersiz e-posta adresi.";
 
     return true;
@@ -30,20 +40,19 @@ class kullanici {
 
     $hashedsifre = password_hash($sifre, PASSWORD_BCRYPT);
 
-      $sql = "INSERT INTO kullanicilar (tc_no, ad, soyad, tel_no, eposta, sifre, adres) 
-              VALUES ('$tc', '$ad', '$soyad', '$tel', '$eposta', '$hashedsifre', '$adres')";
-      if ($this->db->sorgu($sql)) {
-          return "Kayıt başarılı!";
-      } else {
-          return "Kayıt başarısız: " . $this->db->baglanti->error;
+    $sql = "INSERT INTO kullanicilar (tc_no, ad, soyad, tel_no, eposta, sifre, adres) 
+    VALUES ('$tc', '$ad', '$soyad', '$tel', '$eposta', '$hashedsifre', '$adres')";
+    if ($this->db->sorgu($sql)) {
+      return 1;
+    } else {
+      return 0;
       }
   }
   
   public function veriGuncelle($tc, $ad, $soyad, $tel, $eposta, $adres) {
-
     $kontrol = $this->veriKontrol($tc, $ad, $soyad, $tel, $eposta, $adres);
     if ($kontrol !== true) return $kontrol;
-        
+
     $sql = "UPDATE kullanicilar SET 
             tc_no = '$tc', 
             ad = '$ad', 
@@ -51,16 +60,22 @@ class kullanici {
             tel_no = '$tel', 
             adres = '$adres' 
             WHERE eposta = '$eposta'";
-    return $this->db->sorgu($sql);
+    if ($this->db->sorgu($sql)) {
+        return 1;
+    } else {
+        return 0;
     }
+}
 
-    public function aktiflikGuncelle($eposta, $aktiflik)
-    {
-      $aktiflik = $aktiflik ? 1 : 0;
-  
-      $sql = "UPDATE kullanicilar SET aktiflik = '$aktiflik' WHERE eposta = '$eposta'";
-      return $this->db->sorgu($sql);
+public function aktiflikGuncelle($eposta, $aktiflik) {
+    $aktiflik = $aktiflik ? 1 : 0;
+    $sql = "UPDATE kullanicilar SET aktiflik = '$aktiflik' WHERE eposta = '$eposta'";
+    if ($this->db->sorgu($sql)) {
+        return 1;
+    } else {
+        return 0;
     }
+}
   
     public function kullaniciGiris($eposta, $sifre) {
       if (empty($eposta)) return "E-posta boş olamaz.";
@@ -77,16 +92,16 @@ class kullanici {
   
           if ($aktiflik == 1 && password_verify($sifre, $hashedsifre)) {
               $_SESSION['eposta'] = $eposta;
-              return "Giriş başarılı!";
+              return 1;
           } elseif ($aktiflik == 0) {
-              return "Hesabınız askıya alınmıştır.";
+              return 0;  //hesap banlı
           } else {
-              return "Giriş bilgilerinizi kontrol ediniz.";
+              return 0;
           }
       } else {
-          return "Giriş bilgilerinizi kontrol ediniz.";
+          return 0;
       }
-  }
+     }
     
 
    public function veriAl() {

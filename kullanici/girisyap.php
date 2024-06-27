@@ -1,21 +1,21 @@
 <?php
 
-require_once 'autoload.php';
+require_once '../autoload.php';
 $girilenEposta = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['girisyap'])) {
     $girilenEposta = $_POST['eposta'];
     $kullanici = new Kullanici();
-    $mesaj = $kullanici->kullaniciGiris( $girilenEposta, $_POST['sifre']);
+    $sonuc = $kullanici->kullaniciGiris($girilenEposta, $_POST['sifre']);
 
-    if ($mesaj == "Giriş başarılı!") {
+    if ($sonuc == 1) {
       session_start();
       $_SESSION['eposta'] = $girilenEposta;
-      echo '<script>alert("'.$mesaj.'"); window.location.href = "profil.php";</script>';
+      echo '<script>alert("Giriş başarılı!"); window.location.href = "profil.php";</script>';
       exit();
-     } else {
-      echo '<script>alert("'.$mesaj.'");</script>';
-     }
+  } else {
+      echo '<script>alert("Bilgilerinizi kontrol ediniz.");</script>';
+  }
 }
 ?>
 
@@ -25,14 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['girisyap'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş Yap</title>
-    <link rel="stylesheet" href="mystyle.css">
+    <link rel="stylesheet" href="../mystyle.css">
 </head>
 <body class="body-girisyap">
   
 <form action="girisyap.php" method="POST">
   <div class="container">
   <div class="header">
-  <h2>Kullanıcı Girişi</h2>
+  <h2>Kullanıcı Girişi 👥</h2>
   </div>
     <hr>
     <label><b>E-posta</b></label>
