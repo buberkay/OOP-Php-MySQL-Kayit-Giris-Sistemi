@@ -23,9 +23,9 @@ class kullanici {
     if (preg_match($gecersizKarakterler, $ad) || preg_match($gecersizKarakterler, $soyad)) {
         return "İsim bilgilerinizde geçersiz karakterler bulunmaktadır.";
     }
-    if((strlen($ad)>20) || strlen($soyad)>20) return "İsim bilgileriniz çok uzundur.Kontrol ediniz.";
+    if((strlen($ad)>20) || strlen($soyad)>20) return "İsim bilgileriniz çok uzundur. Kontrol ediniz.";
 
-    if ((strlen($adres) > 80)) return "Adresiniz çok uzundur.Kontrol ediniz.";
+    if ((strlen($adres) > 80)) return "Adresiniz çok uzundur. Kontrol ediniz.";
 
     if (!filter_var($eposta, FILTER_VALIDATE_EMAIL)) return "Geçersiz e-posta adresi.";
 
@@ -94,15 +94,14 @@ public function aktiflikGuncelle($eposta, $aktiflik) {
               $_SESSION['eposta'] = $eposta;
               return 1;
           } elseif ($aktiflik == 0) {
-              return 0;  //hesap banlı
+              return 3;  //hesap banlı
           } else {
               return 0;
           }
       } else {
           return 0;
       }
-     }
-    
+     }  
 
    public function veriAl() {
     return $this->db;

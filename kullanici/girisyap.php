@@ -13,9 +13,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['girisyap'])) {
       $_SESSION['eposta'] = $girilenEposta;
       echo '<script>alert("Giriş başarılı!"); window.location.href = "profil.php";</script>';
       exit();
-  } else {
+    } else if($sonuc == 0) {
       echo '<script>alert("Bilgilerinizi kontrol ediniz.");</script>';
-  }
+    }
+    else if($sonuc == 3){
+      echo '<script>alert("Hesabınız askıya alınmıştır.");</script>';
+    }
 }
 ?>
 
