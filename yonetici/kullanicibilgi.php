@@ -32,21 +32,27 @@ if (isset($_POST['guncelle'])) {
     $adres = $_POST['adres'];
     $aktiflik = $_POST['aktiflik'];
 
-    if ($eposta != $_GET['eposta']) {
-        echo '<script>alert("Geçersiz işlem."); window.location.href = "kontrolpaneli.php";</script>';
+    $kontrolSql = "SELECT * FROM kullanicilar WHERE tc_no = '$tc'";
+    $kontrolResult = $vt->sorgu($kontrolSql);
+    if ($kontrolResult->num_rows == 1) {
+        $kontrolRow = $kontrolResult->fetch_assoc();
+        if ($kontrolRow['eposta'] !== $eposta) {
+            echo '<script>alert("Hata! E-posta değiştirilemez."); window.location.href = "kontrolpaneli.php";</script>';
+            exit();
+        }
+    } else {
+        echo '<script>alert("Hata! Kullanıcı bulunamadı."); window.location.href = "kontrolpaneli.php";</script>';
         exit();
     }
 
-    $mesaj1 = $kullanici->veriGuncelle($tc, $ad, $soyad, $telefon, $eposta, $adres);
-    $mesaj2 = $kullanici->aktiflikGuncelle($eposta, $aktiflik);
-    
-    if ($mesaj1 == 1 && $mesaj2 == 1) {
+    $mesaj = $kullanici->veriGuncelle($tc, $ad, $soyad, $telefon, $eposta, $adres, $aktiflik);
+
+    if ($mesaj == 1) {
         echo '<script>alert("Bilgiler ve aktiflik durumu güncellendi."); window.location.href = "kontrolpaneli.php";</script>';
-    } 
-    if($mesaj1 == 0 || $mesaj2 == 0) {
+    } elseif ($mesaj == 0) {
         echo '<script>alert("Hata! Bilgiler güncellenemedi."); window.location.href = "kontrolpaneli.php";</script>';
-    }else{
-           echo '<script>alert("'.$mesaj1.'");</script>';
+    } else {
+        echo '<script>alert("'.$mesaj.'");</script>';
     }
 }
 ?>
@@ -64,22 +70,22 @@ if (isset($_POST['guncelle'])) {
     <h1>Kullanıcı Bilgilerini Güncelle</h1>
     <form class='user-form' action='kullanicibilgi.php' method='POST' onsubmit='return GuncellemeOnay()'>
         <label><b>TC Kimlik Numarası</b></label>
-        <input type='text' name='tc' value='<?php echo $row["tc_no"]; ?>' required>
+        <input type='text' name='tc' value='<?php echo $row["tc_no"]; ?>' maxlength="11" required>
         
         <label><b>Ad</b></label>
-        <input type='text' name='ad' value='<?php echo $row["ad"]; ?>' required>
+        <input type='text' name='ad' value='<?php echo $row["ad"]; ?>' maxlength="30" required>
         
         <label><b>Soyad</b></label>
-        <input type='text' name='soyad' value='<?php echo $row["soyad"]; ?>' required>
+        <input type='text' name='soyad' value='<?php echo $row["soyad"]; ?>' maxlength="30" required>
         
         <label><b>Telefon Numarası</b></label>
-        <input type='text' name='telefon' value='<?php echo $row["tel_no"]; ?>' required>
+        <input type='text' name='telefon' value='<?php echo $row["tel_no"]; ?>' maxlength="11" required>
         
         <label><b>E-posta</b></label>
         <input type='email' name='eposta' value='<?php echo $row["eposta"]; ?>' readonly>
 
         <label><b>Adres</b></label>
-        <textarea name='adres' required><?php echo $row["adres"]; ?></textarea>
+        <textarea name='adres' maxlength="100" ><?php echo $row["adres"]; ?></textarea>
 
         <label><b>Aktiflik Durumu</b></label><br>
         <input type='radio' id='aktif' name='aktiflik' value='1' <?php echo $row['aktiflik'] ? 'checked' : ''; ?>>

@@ -29,16 +29,16 @@ if (isset($_POST['kaydol'])) {
 
     <hr>
     <label><b>TC Kimlik Numarası</b></label>
-    <input type="text" placeholder="11111111111" name="tc" id="tc" required>
+    <input type="text" placeholder="11111111111" name="tc" id="tc" maxlength="11" required>
 
     <label><b>Ad</b></label>
-    <input type="text" name="ad" id="ad" required>
+    <input type="text" name="ad" id="ad" maxlength="30" required>
 
     <label><b>Soyad</b></label>
-    <input type="text" name="soyad" id="soyad" required>
+    <input type="text" name="soyad" id="soyad" maxlength="30" required>
 
     <label><b>Telefon Numarası</b></label>
-    <input type="text" placeholder="5555555555" name="telefon" id="telefon" required>
+    <input type="text" placeholder="5555555555" name="telefon" id="telefon" maxlength="11" required>
 
     <label><b>E-posta</b></label>
     <input type="email" placeholder="xxx@xxx.com" name="eposta" id="eposta" required>
@@ -47,7 +47,7 @@ if (isset($_POST['kaydol'])) {
     <input type="password" name="sifre" id="sifre" required>
 
     <label><b>Adres</b></label>
-    <textarea name="adres" id="adres" required></textarea>
+    <textarea name="adres" id="adres" maxlength="100" ></textarea>
     <hr>
 
   </div> 

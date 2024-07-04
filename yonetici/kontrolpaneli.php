@@ -1,187 +1,67 @@
-.body-kaydol,.body-girisyap,.body-profil  {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+<?php
+session_start();
+require_once '../autoload.php';
+
+if (!isset($_SESSION['yonetici_eposta'])) {
+    header("Location: yoneticigirisyap.php");
+    exit();
 }
 
-.container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 5px;
-    width: 50%;
-    margin: auto;
-    margin-top: 50px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+$vt = new Veritabani(); 
+$yonetici = new Yonetici();
+$kullanici = new Kullanici();
 
-label {
-    font-weight: bold;
-    color: #333;
-}
+$sql = "SELECT * FROM kullanicilar"; 
+$result = $vt->sorgu($sql); 
+?>
 
-input[type=text], input[type=password], input[type=email], textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #1e3799;
-    color: white;
-    padding: 12px 20px;
-    margin: 2px auto;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    width: 50%;
-    display: block;
-}
-
-button:hover {
-    background-color: #0c2461;
-}
-
-hr {
-    border: 1px solid #f2f2f2;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.cikisbtn {
-    background-color: #e74c3c;
-    margin-top: 20px; 
-}
-
-.cikisbtn:hover {
-    background-color: #c0392b;
-}
-
-.user-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 20px auto;
-    max-width: 600px;
-}
-
-.form-label {
-    font-weight: bold;
-    color: #333;
-}
-
-.form-input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.header h2 {
-    font-size: 24px;
-    color: #333;
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-.body-giris {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-}
-
-.container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 5px;
-    width: 50%;
-    margin: auto;
-    margin-top: 50px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.header h2 {
-    font-size: 24px;
-    color: #333;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.btn {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    width: 150px;
-    color: white;
-    font-size: 16px;
-}
-
-.user-btn {
-    background-color: #1e3799;
-}
-
-.user-btn:hover {
-    background-color: #0c2461;
-}
-
-.admin-btn {
-    background-color: #e74c3c;
-}
-
-.admin-btn:hover {
-    background-color: #c0392b;
-}
-
-.table-container {
-    margin-top: 50px;
-}
-
-.user-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.user-table, .user-table th, .user-table td {
-    border: 1px solid #ddd;
-}
-
-.user-table th, .user-table td {
-    padding: 12px;
-    text-align: left;
-}
-
-.user-table th {
-    background-color: #f2f2f2;
-}
-
-.editbtn {
-    background-color: #1e3799;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-}
-
-.editbtn:hover {
-    background-color: #0c2461;
-}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcıları Güncelle</title>
+    <link rel="stylesheet" href="../mystyle.css">
+</head>
+<body class="body-profil">
+<div class="container">
+    <h1>Kullanıcıları Güncelle</h1>
+    <div class="table-container">
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>TC Kimlik Numarası</th>
+                    <th>Ad</th>
+                    <th>Soyad</th>
+                    <th>Telefon Numarası</th>
+                    <th>E-posta</th>
+                    <th>Adres</th>
+                    <th>Aktiflik Durumu</th>
+                    <th>Düzenle</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>".$row["tc_no"]."</td>";
+                    echo "<td>".$row["ad"]."</td>";
+                    echo "<td>".$row["soyad"]."</td>";
+                    echo "<td>".$row["tel_no"]."</td>";
+                    echo "<td>".$row["eposta"]."</td>";
+                    echo "<td>".$row["adres"]."</td>";
+                    echo "<td>".($row['aktiflik'] ? 'Aktif' : 'Erişim engelli')."</td>";
+                    echo "<td><a href='kullanicibilgi.php?eposta=".$row['eposta']."' class='editbtn'>Düzenle</a></td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='8'>Kullanıcı bulunamadı.</td></tr>";
+            }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

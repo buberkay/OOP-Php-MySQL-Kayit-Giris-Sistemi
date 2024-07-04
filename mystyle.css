@@ -1,4 +1,4 @@
-.body-kaydol,.body-girisyap,.body-profil  {
+.body-kaydol,.body-girisyap,.body-profil {
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
 }
@@ -115,7 +115,6 @@ hr {
     margin-bottom: 20px;
 }
 
-
 .button-container {
     display: flex;
     justify-content: center;
@@ -150,12 +149,14 @@ hr {
 
 .table-container {
     margin-top: 50px;
+    overflow-x: auto; 
 }
 
 .user-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    min-width: 800px;
 }
 
 .user-table, .user-table th, .user-table td {

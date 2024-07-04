@@ -20,8 +20,9 @@ if (isset($_POST['guncelle'])) {
     $soyad = $_POST['soyad'];
     $telefon = $_POST['telefon'];
     $adres = $_POST['adres'];
+    $aktiflik = $_POST['aktiflik'];
 
-    $mesaj = $kullanici->veriGuncelle($tc, $ad, $soyad, $telefon, $eposta, $adres);
+    $mesaj = $kullanici->veriGuncelle($tc, $ad, $soyad, $telefon, $eposta, $adres, $aktiflik);
     
     if ($mesaj ==1) {
         echo '<script>alert("Bilgiler güncellendi."); window.location.href = "profil.php";</script>';
@@ -56,19 +57,19 @@ if (isset($_POST['cikisyap'])) {
     <h1>Profil</h1>
     <form action="profil.php" method="POST" onsubmit="return GuncellemeOnay()">
         <label><b>TC Kimlik Numarası</b></label>
-        <input type="text" name="tc" value="<?php echo $userData['tc_no']; ?>" required>
+        <input type="text" name="tc" value="<?php echo $userData['tc_no']; ?>" maxlength="11" required>
         
         <label><b>Ad</b></label>
-        <input type="text" name="ad" value="<?php echo $userData['ad']; ?>" required>
+        <input type="text" name="ad" value="<?php echo $userData['ad']; ?>" maxlength="30" required>
         
         <label><b>Soyad</b></label>
-        <input type="text" name="soyad" value="<?php echo $userData['soyad']; ?>" required>
+        <input type="text" name="soyad" value="<?php echo $userData['soyad']; ?>" maxlength="30" required>
         
         <label><b>Telefon Numarası</b></label>
-        <input type="text" name="telefon" value="<?php echo $userData['tel_no']; ?>" required>
+        <input type="text" name="telefon" value="<?php echo $userData['tel_no']; ?>" maxlength="11"required>
         
         <label><b>Adres</b></label>
-        <textarea name="adres" required><?php echo $userData['adres']; ?></textarea>
+        <textarea name="adres" maxlength="100"><?php echo $userData['adres']; ?></textarea>
         
         <button type="submit" name="guncelle" class="updatebtn">Bilgileri Güncelle</button>
     </form>
